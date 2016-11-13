@@ -1,0 +1,25 @@
+<body>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : 1117892144997062,
+        xfbml      : true,
+        version    : 'v2.6'
+      });
+    };
+
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "//connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+  </script>
+  <img src='/static/out.png'/><br/>
+  <a href="/upload">UPLOAD YOUR OWN IMAGE</a><br/>
+  ...or try styling these previously uploaded files (generates from scratch, takes 6-7 sec):<br/> 
+  {% for src, sty in links %}
+    <a href='/combine/?img={{ src }}&sty={{ sty }}'>{{ src }} + {{ sty }}</a><br/>
+  {% endfor %}
+</body>

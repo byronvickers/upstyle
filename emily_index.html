@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+<base href="http://upstyle.byron.io/emily/" />
+
+	<meta content="charset=utf-8">
+	<title>Upstyle</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+  <!-- Syntax Highlighter -->
+ 
+  <link rel="stylesheet" href="css/bootstrap.css" type="text/css" media="screen" />
+  <!-- Demo CSS -->
+	<link rel="stylesheet" href="css/demo.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="flexslider.css" type="text/css" media="screen" />
+</head>
+<body onload="myFunction()" style="margin:0;">
+
+<script>
+  // This is called with the results from from FB.getLoginStatus().
+  function statusChangeCallback(response) {
+    console.log('statusChangeCallback');
+    console.log(response);
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for FB.getLoginStatus().
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      testAPI();
+    } else if (response.status === 'not_authorized') {
+      // The person is logged into Facebook, but not your app.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into this app.';
+    } else {
+      // The person is not logged into Facebook, so we're not sure if
+      // they are logged into this app or not.
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into Facebook.';
+    }
+  }
+
+  // This function is called when someone finishes with the Login
+  // Button.  See the onlogin handler attached to it in the sample
+  // code below.
+  function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
+
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '1117892144997062',
+    cookie     : true,  // enable cookies to allow the server to access
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.8' // use graph api version 2.8
+  });
+
+  // Now that we've initialized the JavaScript SDK, we call
+  // FB.getLoginStatus().  This function gets the state of the
+  // person visiting this page and can return one of three states to
+  // the callback you provide.  They can be:
+  //
+  // 1. Logged into your app ('connected')
+  // 2. Logged into Facebook, but not your app ('not_authorized')
+  // 3. Not logged into Facebook and can't tell if they are logged into
+  //    your app or not.
+  //
+  // These three cases are handled in the callback function.
+
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+
+  };
+
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  // Here we run a very simple test of the Graph API after login is
+  // successful.  See statusChangeCallback() for when this call is made.
+  function testAPI() {
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('/me', function(response) {
+      console.log('Successful login for: ' + response.name);
+      document.getElementById('status').innerHTML =
+        'Thanks for logging in, ' + response.name + '!';
+      FB.api(
+            //"/" + response.id + "/picture?height=1000&width=1000",
+            "/me?fields=cover",
+            function (response1) {
+              if (response1 && !response1.error) {
+                /* handle the result */
+                var url = "http://upstyle.byron.io/urlload?url=" + encodeURIComponent(response1.cover.source)
+                url = url + "&userid=" + encodeURIComponent(response.id)
+                window.USERID = response.id
+                fetch(url).then(function (resp) {windowReadyCallback()})
+              }
+            }
+        );
+    });
+  }
+  function setCoverPhoto() {
+        //var request = "https://graph.facebook.com/v2.4/" + encodeURIComponent(FB.getUserID()) + "/photos?"
+        //request += "url=" +  encodeURIComponent(PICTURE_URL)
+        //request += "&caption=" + encodeURIComponent("Created with Upstyle!")
+        //request += "&access_token="     + encodeURIComponent(FB.getAccessToken())
+        //console.log(request)
+        
+        //debugger;
+        //url = "hhtp://upstyle.byron.io/send_request?request=" + encodeURIComponent(request)
+        FB.api(
+            "/me/photos",
+            "POST",
+            {
+                "url": "http://upstyle.byron.io/uploads/" + window.USERID + "/mosaic.png",
+                "caption": "Created by Upstyle #TODO"
+            },
+            function (response) {
+              if (response && !response.error) {
+                //debugger;
+                window.open("http://www.facebook.com/profile.php?preview_cover=" + response.id)
+              }
+            }
+        );
+
+ }
+</script>
+
+<div id="status">
+</div>
+
+
+<div id="loader"></div>
+<script>
+var myVar;
+
+function myFunction() {
+  myVar = setTimeout(showPage, 300);
+}
+
+function windowReadyCallback() {
+  document.getElementById("i1").src = "http://upstyle.byron.io/uploads/" + window.USERID + "/raw.jpg"
+  document.getElementById("i2").src = "http://upstyle.byron.io/uploads/" + window.USERID + "/feathers.png"
+  document.getElementById("i3").src = "http://upstyle.byron.io/uploads/" + window.USERID + "/mosaic.png"
+  document.getElementById("i4").src = "http://upstyle.byron.io/uploads/" + window.USERID + "/candy.png"
+  document.getElementById("j1").src = "http://upstyle.byron.io/uploads/" + window.USERID + "/raw.jpg"
+  document.getElementById("j2").src = "http://upstyle.byron.io/uploads/" + window.USERID + "/feathers.png"
+  document.getElementById("j3").src = "http://upstyle.byron.io/uploads/" + window.USERID + "/mosaic.png"
+  document.getElementById("j4").src = "http://upstyle.byron.io/uploads/" + window.USERID + "/candy.png"
+}
+
+//function showPage() {
+//  document.getElementById("loader").style.display = "none";
+//  document.getElementById("myDiv").style.display = "block";
+//}
+</script>
+
+<body class="loading">
+  <script>
+  function reloadImage(img) {
+    setTimeout(function(){ img.src = img.src; }, 5000);
+  }
+  </script>
+
+  <div id="container" class="cf">
+    <header>
+      <h1>upstyle</h1>
+    </header>
+    <div class="loader"></div>
+    <div id="main" role="main">
+      <section class="slider">
+        <div id="slider" class="flexslider">
+
+          <ul class="slides">
+            <li style= " width:80%; background-image:url('https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif'); background-size:cover; background-position:center center;">
+              <img id="i1" src="http://upstyle.byron.io/uploads/1843170215963673/raw.jpg" onError="reloadImage(this)" />
+            </li>
+            <li style= " height:350px; background-image:url('https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif'); background-size:cover; background-position:center center;">
+              <img id="i2" src="images/donut.jpg" />
+            </li>
+            <li style= " width:80%; background-image:url('https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif'); background-size:cover; background-position:center center;">
+              <img id="i3" src="http://upstyle.byron.io/uploads/1843170215963673/mosaic.png"  onError="reloadImage(this)" />
+            </li>
+            <li style= " width:80%; background-image:url('https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif'); background-size:cover; background-position:center center;">
+              <img id="i4" src="http://upstyle.byron.io/uploads/1843170215963673/candy.png"  onError="reloadImage(this)" />
+            </li>
+          </ul>
+        </div>
+        <button type="button" class="btn btn-primary btn-lg" onclick="setCoverPhoto()">Set as cover photo</button>
+        <fb:login-button scope="public_profile,email,user_photos,publish_actions" onlogin="checkLoginState();">
+Log in with Facebook to style YOUR cover photo</fb:login-button>
+        <div id="carousel" class="flexslider">
+          <ul class="slides">
+            <li style= " height:150px; background-image:url('https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif'); background-size:cover; background-position:center center;">
+              <img id="j1" src="http://upstyle.byron.io/uploads/1/raw.jpg" onError="reloadImage(this)"/>
+            </li>
+            <li style= " height:150px; background-image:url('https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif'); background-size:cover; background-position:center center;">
+              <img id="j2" src="http://upstyle.byron.io/uploads/1/feathers.png" onError="reloadImage(this)"/>
+            </li>
+            <li style= " height:150px; background-image:url('https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif'); background-size:cover; background-position:center center;">
+              <img id="j3" src="http://upstyle.byron.io/uploads/1/mosaic.png"  onError="reloadImage(this)"/>
+            </li>
+            <li style= " height:150px; background-image:url('https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif'); background-size:cover; background-position:center center;">
+              <img id="j4" src="http://upstyle.byron.io/uploads/1/candy.png"  onError="reloadImage(this)"/>
+            </li>
+          </ul>
+        </div>
+      </section>
+      
+    </div>
+
+  </div>
+
+  <!-- jQuery -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.min.js">\x3C/script>')</script>
+
+  <!-- FlexSlider -->
+  <script defer src="jquery.flexslider.js"></script>
+
+  <script type="text/javascript">
+  $(window).load(function(){
+    $('#carousel').flexslider({
+      animation: "slide",
+      controlNav: false,
+      animationLoop: false,
+      slideshow: false,
+      itemWidth: 210,
+      itemMargin: 5,
+      asNavFor: '#slider'
+    });
+
+    $('#slider').flexslider({
+      animation: "slide",
+      controlNav: false,
+      animationLoop: false,
+      slideshow: false,
+      sync: "#carousel",
+      start: function(slider){
+        $('body').removeClass('loading');
+      }
+    });
+  });
+  </script>
+
+
+
+  <!-- Optional FlexSlider Additions -->
+  <script src="js/jquery.easing.js"></script>
+  <script src="js/jquery.mousewheel.js"></script>
+  <script defer src="js/demo.js"></script>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+
+</body>
+</html>
